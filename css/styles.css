@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito&family=Roboto&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font: normal 1rem/1.6 'Nunito', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+
+.pokemon-list-title {
+    text-decoration: underline;
+}
+.pokemon {
+    width: 400px;
+    margin: 10px auto;
+}
+ .pokemon .pokemon-big{
+     color: brown;
+ }
