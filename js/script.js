@@ -42,7 +42,17 @@ let pokemonRepository = (function(){
     }
 
     function add(newPokemon){
-        pokemonList.push(newPokemon);
+        if(typeof newPokemon !== 'object')
+            console.log("You can add only pokemon of object type");
+        else{
+            const newPokemonKeys = Object.keys(newPokemon).sort().toString();
+            if(newPokemonKeys === ["name","height", "types"].sort().toString()){
+                pokemonList.push(newPokemon);
+                console.log("After adding new pokemon: ",getAll());
+            }
+            else
+                console.log("Objects keys are not matching");
+        }           
     } 
 
     return{
@@ -73,6 +83,7 @@ pokemonRepository.getAll().forEach((pokemon, index) => {
                     </p>`);
 });
 
+//filtering pokemon list
 document.write(`
     <form id="search-by-name">
         <input type="text" id="searchTerm" placeholder="Type name here" required>
@@ -84,10 +95,8 @@ function handleSubmit( event ){
     event.preventDefault();
     let serachInput = document.querySelector('#searchTerm');
     let term = serachInput.value;
-    console.log(term);
 
     let filteredPokemonList = !!term && searchPokemonByName(term.trim().toLowerCase());
-    console.log(filteredPokemonList);
     filteredPokemonList && displayPokemon(filteredPokemonList);
 }
 
@@ -119,3 +128,14 @@ function displayPokemon(pokemonList){
 let searchForm = document.querySelector('#search-by-name');
 searchForm.addEventListener('submit', handleSubmit);
 
+//type checking
+console.log(pokemonRepository.add("hello"));
+console.log(pokemonRepository.add({
+                                    name: "Meowth",
+                                    height: .37
+                                }));
+console.log(pokemonRepository.add({
+                                    name: "Meowth",
+                                    height: .37,
+                                    types: "dark",
+                                }));
