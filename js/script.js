@@ -1,4 +1,4 @@
-var pokemonRepository = (function(){
+let pokemonRepository = (function(){
     let pokemonList = [
         {
             name : 'Bulbasaur',
@@ -72,3 +72,50 @@ pokemonRepository.getAll().forEach((pokemon, index) => {
                     ${index+1}. ${pokemonName} ${pokemonHeight} <span class="pokemon-big">${isPokemonBig}</span>
                     </p>`);
 });
+
+document.write(`
+    <form id="search-by-name">
+        <input type="text" id="searchTerm" placeholder="Type name here" required>
+        <button class="btn" type="submit">Serach</button>
+    </form>
+`);
+
+function handleSubmit( event ){
+    event.preventDefault();
+    let serachInput = document.querySelector('#searchTerm');
+    let term = serachInput.value;
+    console.log(term);
+
+    let filteredPokemonList = !!term && searchPokemonByName(term.trim().toLowerCase());
+    console.log(filteredPokemonList);
+    filteredPokemonList && displayPokemon(filteredPokemonList);
+}
+
+function searchPokemonByName(term){
+    return pokemonRepository.getAll().filter(pokemon => {
+        if(pokemon.name.toLowerCase().startsWith(term))
+            return pokemon;
+    });
+}
+
+function displayPokemon(pokemonList){
+    if(pokemonList.length === 0){
+        document.write(`<h2 class="pokemon-list-title">No match found</h2>`);
+    }
+    else{
+        document.write(`<h2 class="pokemon-list-title">Filtered List</h2>`);
+        pokemonList.forEach((pokemon, index) => {
+            let pokemonName = pokemon.name;
+            let pokemonHeight = '\(height: ' + pokemon.height + '\)';
+            let isPokemonBig = pokemon.height > 1 ? '- Wow,that\'s big!' : '';
+            
+            document.write(`<p class="pokemon">
+                            ${index+1}. ${pokemonName} ${pokemonHeight} <span class="pokemon-big">${isPokemonBig}</span>
+                            </p>`);
+        });  
+    }
+}
+
+let searchForm = document.querySelector('#search-by-name');
+searchForm.addEventListener('submit', handleSubmit);
+
