@@ -55,87 +55,36 @@ let pokemonRepository = (function(){
         }           
     } 
 
+    function addListItem(pokemon){
+        let pokemonList = document.querySelector('.pokemon-list');
+        let listItem = document.createElement('li');
+        let button = document.createElement('button'); 
+        button.innerText = pokemon.name;
+        button.classList.add('pokemon-btn');
+        listItem.appendChild(button);
+        pokemonList.appendChild(listItem);
+
+        //button event listener
+        eventListener(button, pokemon);
+    }
+
+    function eventListener(button, pokemon){
+        button.addEventListener('click',function(){
+            showDetails(pokemon)
+        });
+    }
+
+    function showDetails(pokemon){
+        console.log(`Pokemon clicked: ${pokemon.name}`);
+    }
+
     return{
         getAll : getAll,
         add : add,
+        addListItem : addListItem,
     }
 })();
 
-document.write(`<h2 class="pokemon-list-title">Pokemon List</h2>`);
-
-// for(let i = 0; i < pokemonList.length; i++){
-//     let pokemonName = pokemonList[i].name;
-//     let pokemonHeight = '\(height: ' + pokemonList[i].height + '\)';
-//     let isPokemonBig = pokemonList[i].height > 1 ? '- Wow,that\'s big!' : '';
-
-//     document.write(`<p class="pokemon">
-//                        ${i+1}. ${pokemonName} ${pokemonHeight} <span class="pokemon-big">${isPokemonBig}</span>
-//                     </p>`);
-// }
-
-pokemonRepository.getAll().forEach((pokemon, index) => {
-    let pokemonName = pokemon.name;
-    let pokemonHeight = '\(height: ' + pokemon.height + '\)';
-    let isPokemonBig = pokemon.height > 1 ? '- Wow,that\'s big!' : '';
-    
-    document.write(`<p class="pokemon">
-                    ${index+1}. ${pokemonName} ${pokemonHeight} <span class="pokemon-big">${isPokemonBig}</span>
-                    </p>`);
-});
-
-//filtering pokemon list
-document.write(`
-    <form id="search-by-name">
-        <input type="text" id="searchTerm" placeholder="Type name here" required>
-        <button class="btn" type="submit">Serach</button>
-    </form>
-`);
-
-function handleSubmit( event ){
-    event.preventDefault();
-    let serachInput = document.querySelector('#searchTerm');
-    let term = serachInput.value;
-
-    let filteredPokemonList = !!term && searchPokemonByName(term.trim().toLowerCase());
-    filteredPokemonList && displayPokemon(filteredPokemonList);
-}
-
-function searchPokemonByName(term){
-    return pokemonRepository.getAll().filter(pokemon => {
-        if(pokemon.name.toLowerCase().startsWith(term))
-            return pokemon;
-    });
-}
-
-function displayPokemon(pokemonList){
-    if(pokemonList.length === 0){
-        document.write(`<h2 class="pokemon-list-title">No match found</h2>`);
-    }
-    else{
-        document.write(`<h2 class="pokemon-list-title">Filtered List</h2>`);
-        pokemonList.forEach((pokemon, index) => {
-            let pokemonName = pokemon.name;
-            let pokemonHeight = '\(height: ' + pokemon.height + '\)';
-            let isPokemonBig = pokemon.height > 1 ? '- Wow,that\'s big!' : '';
-            
-            document.write(`<p class="pokemon">
-                            ${index+1}. ${pokemonName} ${pokemonHeight} <span class="pokemon-big">${isPokemonBig}</span>
-                            </p>`);
-        });  
-    }
-}
-
-let searchForm = document.querySelector('#search-by-name');
-searchForm.addEventListener('submit', handleSubmit);
-
-//type checking
-console.log(pokemonRepository.add("hello"));
-console.log(pokemonRepository.add({
-                                    name: "Meowth",
-                                    height: .37
-                                }));
-console.log(pokemonRepository.add({
-                                    name: "Meowth",
-                                    height: .37,
-                                    types: "dark",
-                                }));
+pokemonRepository.getAll().forEach((pokemon) => {
+   pokemonRepository.addListItem(pokemon);
+})
