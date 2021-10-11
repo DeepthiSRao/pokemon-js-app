@@ -2,6 +2,7 @@ const pokemonRepository = (() => {
     let pokemonList = [];
     let apiURL = 'https://pokeapi.co/api/v2/pokemon/?limit=150';
     let progress = document.querySelector('.progress');
+    let modalContainer = document.querySelector('#modal-container');
 
     const loadList = () => {
         return fetch(apiURL).then((response) => {
@@ -9,7 +10,7 @@ const pokemonRepository = (() => {
         }).then(function( json ){
             setTimeout(()=>(
                 closeLoadingMessage()
-            ), 2000);
+            ), 1000);
             json.results.forEach(( item ) => {
                 let pokemon = {
                     name: item.name,
@@ -23,15 +24,13 @@ const pokemonRepository = (() => {
     };
 
     const loadDetails = (pokemon) => {
-        pokemonRepository.showLoadingMessage();
+        showLoadingMessage();
         let url = pokemon.detailsUrl;
 
         return fetch(url).then((response) => {
             return response.json();
         }).then((details) => {
-            setTimeout(()=>(
-                closeLoadingMessage()
-            ), 1000);
+            closeLoadingMessage();
             pokemon.imageUrl = details.sprites.front_default;
             pokemon.height = details.height;
             pokemon.types = details.types.map( item => (
@@ -70,16 +69,73 @@ const pokemonRepository = (() => {
     }
 
     const eventListener = (button, pokemon) => {
-        button.addEventListener('click',function(){
+        button.addEventListener('click',function(){          
             showDetails(pokemon)
         });
     }
 
+    //Display pokemon details modal on click 
     const showDetails = (pokemon) => {
         pokemonRepository.loadDetails(pokemon).then(() => {
-            console.log(pokemon);
+            displayPokemonModal(pokemon);
         });
     }
+
+    const displayPokemonModal = (pokemon) =>{
+        const {name, height, imageUrl} = pokemon;
+
+        //clear previous content
+        modalContainer.innerText = '';
+
+        //Creating modal
+        let modal = document.createElement('div');
+        modal.classList.add('modal');
+
+        let modalContent = document.createElement('div');
+        modal.classList.add('modal-body');
+
+        let titleElement = document.createElement('h1');
+        titleElement.innerText = name;
+        titleElement.style.textTransform = 'capitalize';
+        titleElement.classList.add('pokemon-title');
+
+        let pokemonHeight = document.createElement('p');
+        pokemonHeight.innerText = `Height : ${height}`;
+
+        let pokemonImage = document.createElement('img');
+        pokemonImage.src = imageUrl;
+        pokemonImage.classList.add('pokemon-img');
+
+        let closeButtonElement = document.createElement('div');
+        closeButtonElement.classList.add('close-btn');
+        closeButtonElement.addEventListener('click', hideModal);
+
+        modalContent.appendChild(titleElement);
+        modalContent.appendChild(pokemonHeight);
+        modalContent.appendChild(pokemonImage);
+        modal.append(modalContent);
+        modal.appendChild(closeButtonElement);
+        modalContainer.appendChild(modal);
+        modalContainer.classList.add('is-visible');
+    }
+
+    const hideModal = () =>{
+        modalContainer.classList.remove('is-visible');
+    }
+
+    //close the modal on press of Esc key
+    window.addEventListener('keydown', (e)=>{
+        if(e.key === 'Escape' && modalContainer.classList.contains('is-visible')){
+            hideModal();
+        }
+    });
+
+    //close the modal if we click outside the modal
+    modalContainer.addEventListener('click', e =>{
+        let target = e.target;
+        if(target === modalContainer)
+            hideModal();
+    });
 
     const showLoadingMessage = () =>{
         progress.classList.add('show');
