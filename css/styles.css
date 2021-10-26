@@ -47,22 +47,23 @@ body {
     width: 200%;
 }
 
-.modal-header {
-	border: none;
-    color: white;
-    padding: 5px;
-}
-
 .pokemon-img {
     height: 150px;
     width: 150px;
     align-self: center;
 }
 
+
+.modal-header {
+	border: none;
+    color: white;
+    padding: 5px;
+}
+
 .modal-footer {
     border: none;
 }
 
-.modal-content{
-    pointer-events: fill;
+.modal-header .close {
+    margin: -1rem -1rem -1rem -4rem;
 }
