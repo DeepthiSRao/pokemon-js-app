@@ -1,16 +1,11 @@
 const pokemonRepository = (() => {
     let pokemonList = [];
     let apiURL = 'https://pokeapi.co/api/v2/pokemon/?limit=150';
-    let progress = document.querySelector('.progress');
-    let modalContainer = document.querySelector('#modal-container');
 
     const loadList = () => {
         return fetch(apiURL).then((response) => {
             return response.json();
         }).then(function( json ){
-            setTimeout(()=>(
-                closeLoadingMessage()
-            ), 1000);
             json.results.forEach(( item ) => {
                 let pokemon = {
                     name: item.name,
@@ -24,20 +19,17 @@ const pokemonRepository = (() => {
     };
 
     const loadDetails = (pokemon) => {
-        showLoadingMessage();
         let url = pokemon.detailsUrl;
 
         return fetch(url).then((response) => {
             return response.json();
         }).then((details) => {
-            closeLoadingMessage();
-            pokemon.imageUrl = details.sprites.front_default;
+            pokemon.imageUrl = details.sprites.other.dream_world.front_default;
             pokemon.height = details.height;
             pokemon.types = details.types.map( item => (
                             item.type.name
                         ));
         }).catch((e) => {
-            closeLoadingMessage();
             console.error(e);
         });
     };
@@ -56,19 +48,39 @@ const pokemonRepository = (() => {
     };
 
     const addListItem = (pokemon) => {
-        let pokemonList = document.querySelector('.pokemon-list');
+        let pokemonList = document.querySelector('#list-group');
         let listItem = document.createElement('li');
+        listItem.classList.add(
+            'list-group-item',
+            'border-0',
+            'col-xl-2',
+            'col-lg-3',
+            'col-md-4',
+            'col-sm-6',
+            'col-xs-12',
+            'align-items-center',
+        );
         let button = document.createElement('button'); 
         button.innerText = pokemon.name;
-        button.classList.add('pokemon-btn');
+        button.classList.add(
+            'btn',
+            'btn-warning',
+            'text-capitalize',
+            'btn-lg',
+            'w-100',
+            'pokemon-btn'
+            );
+        button.setAttribute('data-toggle','modal');
+        button.setAttribute('data-target','#pokemonModal');
+
         listItem.appendChild(button);
         pokemonList.appendChild(listItem);
 
         //button event listener
-        eventListener(button, pokemon);
+        btnEventListener(button, pokemon);
     }
 
-    const eventListener = (button, pokemon) => {
+    const btnEventListener = (button, pokemon) => {
         button.addEventListener('click',function(){          
             showDetails(pokemon)
         });
@@ -77,72 +89,28 @@ const pokemonRepository = (() => {
     //Display pokemon details modal on click 
     const showDetails = (pokemon) => {
         pokemonRepository.loadDetails(pokemon).then(() => {
-            displayPokemonModal(pokemon);
+            showModal(pokemon);
         });
     }
 
-    const displayPokemonModal = (pokemon) =>{
-        const {name, height, imageUrl} = pokemon;
+    const showModal = (pokemon) =>{
+        let modalBody = $('.modal-body');
+        let modalTitle = $('.modal-title');
 
-        //clear previous content
-        modalContainer.innerText = '';
+        //clear the content
+        modalBody.empty();
+        modalTitle.empty();
+        
+        let titleElement = pokemon.name;
+        let heightElement = $(`<p class="mb-n1 py-1">Height: ${pokemon.height}</p>`);
+        let typesElement = $(`<p class="text-capitalize mb-n1">Types: ${pokemon.types}</p>`);
+        let imageElement = $(`<img src="" alt="pokemon-pic" class="pokemon-img w-100 mx-auto">`);
+        imageElement.attr('src', pokemon.imageUrl);
 
-        //Creating modal
-        let modal = document.createElement('div');
-        modal.classList.add('modal');
-
-        let modalContent = document.createElement('div');
-        modal.classList.add('modal-body');
-
-        let titleElement = document.createElement('h1');
-        titleElement.innerText = name;
-        titleElement.style.textTransform = 'capitalize';
-        titleElement.classList.add('pokemon-title');
-
-        let pokemonHeight = document.createElement('p');
-        pokemonHeight.innerText = `Height : ${height}`;
-
-        let pokemonImage = document.createElement('img');
-        pokemonImage.src = imageUrl;
-        pokemonImage.classList.add('pokemon-img');
-
-        let closeButtonElement = document.createElement('div');
-        closeButtonElement.classList.add('close-btn');
-        closeButtonElement.addEventListener('click', hideModal);
-
-        modalContent.appendChild(titleElement);
-        modalContent.appendChild(pokemonHeight);
-        modalContent.appendChild(pokemonImage);
-        modal.append(modalContent);
-        modal.appendChild(closeButtonElement);
-        modalContainer.appendChild(modal);
-        modalContainer.classList.add('is-visible');
-    }
-
-    const hideModal = () =>{
-        modalContainer.classList.remove('is-visible');
-    }
-
-    //close the modal on press of Esc key
-    window.addEventListener('keydown', (e)=>{
-        if(e.key === 'Escape' && modalContainer.classList.contains('is-visible')){
-            hideModal();
-        }
-    });
-
-    //close the modal if we click outside the modal
-    modalContainer.addEventListener('click', e =>{
-        let target = e.target;
-        if(target === modalContainer)
-            hideModal();
-    });
-
-    const showLoadingMessage = () =>{
-        progress.classList.add('show');
-    }
-
-    const closeLoadingMessage = () =>{
-        progress.classList.remove('show');
+        modalTitle.append(titleElement);
+        modalBody.append(imageElement);
+        modalBody.append(heightElement);
+        modalBody.append(typesElement);
     }
 
     return{
@@ -152,12 +120,10 @@ const pokemonRepository = (() => {
         loadDetails: loadDetails,
         loadList : loadList,
         showDetails : showDetails,
-        showLoadingMessage : showLoadingMessage,
     }
 })();
 
 pokemonRepository.loadList().then(() => {
-    pokemonRepository.showLoadingMessage();
     pokemonRepository.getAll().forEach((pokemon) => {
         pokemonRepository.addListItem(pokemon);
     });

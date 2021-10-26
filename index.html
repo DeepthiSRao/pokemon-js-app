@@ -4,19 +4,43 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple JS App</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="shortcut icon" href="./image/favicon-32x32.png" type="image/x-icon">
+    <title>Pokemon App</title>
     <link rel="stylesheet" href="./css/styles.css">
 </head>
 <body>
-    <div class="container">
-        <h2 class="pokemon-list-title">Pokedex</h2>
-        <ul class="pokemon-list"></ul>
-    </div>
-    <div id="modal-container">
+    <header>
+        <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand" href="index.html">
+                <img src="image/Pokémon.png" alt="logo pic" class="navbar-img-logo">
+            </a>
+        </nav>
+    </header>
+    <div class="container page-container">  
+        <h2 class="display-6 text-center mb-n1 pt-2">Pokédex</h2>
+        <div class="list-group flex-row list-group-horizontal flex-wrap" id="list-group"></div>
+         
+        <!-- Modal -->
+        <div class="modal fade" id="pokemonModal" tabindex="-1" role="dialog" aria-labelledby="modal-title" aria-hidden="true">
+            <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+            <div class="modal-content border-success border-2">
+                <div class="modal-header bg-success">
+                    <h5 class="modal-title flex-fill text-center display-5 text-capitalize fw-bold" id="modal-title"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                </div>
+            </div>
+            </div>
+        </div>
     </div>  
-    <div class="progress">
-        <p class="loading-mess">Loading the data...</p>
-    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
     <script src="./js/promise-polyfill.min.js"></script>
     <script src="./js/fetch-pollyfill.js"></script>
     <script src="./js/script.js"></script>
