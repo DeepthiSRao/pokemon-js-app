@@ -102,7 +102,7 @@ const pokemonRepository = (() => {
         modalTitle.empty();
         
         let titleElement = pokemon.name;
-        let heightElement = $(`<p class="mb-n1 py-1">Height: ${pokemon.height}</p>`);
+        let heightElement = $(`<p class="mb-n1 py-1">Height: ${pokemon.height/10}m</p>`);
         let typesElement = $(`<p class="text-capitalize mb-n1">Types: ${pokemon.types}</p>`);
         let imageElement = $(`<img src="" alt="pokemon-pic" class="pokemon-img w-100 mx-auto">`);
         imageElement.attr('src', pokemon.imageUrl);
