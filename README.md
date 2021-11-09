@@ -1,11 +1,10 @@
+# Pokédex( Javascript App )
 
-# Pokemon App
-
-Is a simple web application that loads 150 Pokemon from external API and displays thwm in interactive list.
+This a simple web application that loads 150 Pokemon from external API and displays them in interactive list.
 
 ## App Features
-* Load data from external API
-* View a list of items
+* Loads data from external API
+* View a list of pokemon
 * On user action(e.g., by clicking on a list item), will open a model that dispalys pokemon details.
 * Filter Pokemon by name 
 
