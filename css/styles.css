@@ -11,6 +11,8 @@
     --mark-size: 25px;
     --primary-color: #ffbe0b;
     --secondary-color: #3a86ff;
+    --text-primary-color: #5f676f;
+    --text-secondary-color: #fff;
 }
 
 body {
@@ -18,7 +20,6 @@ body {
     font-style: normal;
     line-height: 1.6;
     font-family: 'Andada Pro', serif; 
-    min-height: 75rem;
     padding-top: 4rem;
 }
 
@@ -34,6 +35,11 @@ body {
     min-width: 150px !important;
     background-color: var(--primary-color);
     box-shadow: 4px 4px 4px -2px var(--secondary-color);
+}
+
+.list-group {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
 }
 
 .btn:hover {
@@ -52,9 +58,14 @@ body {
     align-self: center;
 }
 
+.modal-content {
+    border-width: 2px;
+    border-radius: .5rem;
+}
+
 .modal-header {
 	border: none;
-    color: white;
+    color: var(--text-secondary-color);
     padding: 5px;
 }
 
@@ -66,4 +77,35 @@ body {
     z-index: 99;
     margin-left: -4rem;
     border-color: transparent;
+    border-radius: 30%;
+    cursor: pointer;
+}
+
+#btn-back-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: none;
+}
+
+.text-bold {
+    font-weight: 300;
+    color: var(--text-primary-color);
+}
+
+.pokemon-type {
+    display: inline-block;
+    padding: 2px 6px;
+    margin: 2px;
+    color: var(--text-secondary-color);
+    border-radius: 5px;
+    text-align: center;
+    text-transform: capitalize;
+}
+
+@media screen and (max-width:576px) {
+    .list-group {
+        padding-left: 3rem;
+        padding-right: 3rem;
+    }
 }
