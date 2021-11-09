@@ -1,6 +1,26 @@
 const pokemonRepository = (() => {
     let pokemonList = [];
     let apiURL = 'https://pokeapi.co/api/v2/pokemon/?limit=150';
+    let typeColor = {
+        normal: '#A8A77A',
+        fire: '#EE8130',
+        water: '#6390F0',
+        electric: '#F7D02C',
+        grass: '#7AC74C',
+        ice: '#96D9D6',
+        fighting: '#C22E28',
+        poison: '#A33EA1',
+        ground: '#E2BF65',
+        flying: '#A98FF3',
+        psychic: '#F95587',
+        bug: '#A6B91A',
+        rock: '#B6A136',
+        ghost: '#735797',
+        dragon: '#6F35FC',
+        dark: '#705746',
+        steel: '#B7B7CE',
+        fairy: '#D685AD',
+    };
 
     const loadList = () => {
         return fetch(apiURL).then((response) => {
@@ -26,9 +46,13 @@ const pokemonRepository = (() => {
         }).then((details) => {
             pokemon.imageUrl = details.sprites.other.dream_world.front_default;
             pokemon.height = details.height;
-            pokemon.types = details.types.map( item => (
-                            item.type.name
-                        ));
+            pokemon.types = details.types.map( item => {
+                                return {
+                                    'type' :  item.type.name,
+                                    'color' : typeColor[item.type.name]
+                                }});
+            pokemon.weight = details.weight;
+            pokemon.id = details.id;
         }).catch((e) => {
             console.error(e);
         });
@@ -100,19 +124,88 @@ const pokemonRepository = (() => {
         //clear the content
         modalBody.empty();
         modalTitle.empty();
-        
-        let titleElement = pokemon.name;
-        let heightElement = $(`<p class="mb-n1 py-1">Height: ${pokemon.height}</p>`);
-        let typesElement = $(`<p class="text-capitalize mb-n1">Types: ${pokemon.types}</p>`);
+        let titleElement = `#${pokemon.id} ${pokemon.name}`;
+        let typeElement = $(`<p class="mb-n1 pt-2">
+                                <span class="text-bold">Type: </span>
+                                ${pokemon.types.map((pokemon)=>{
+                                    return `<span class="pokemon-type" style='background-color:${pokemon.color}'}>${pokemon.type}</span>`
+                                }).join('')}
+                            </p>`);
+        let heightElement = $(`<p class="mb-n1">
+                                    <span class="text-bold">Height: </span>${pokemon.height/10}m
+                                </p>`);
+        let weightElement = $(`<p class="mb-n1">
+                                    <span class="text-bold">Weight: </span>${pokemon.weight/10}Kg
+                                </p>`);
         let imageElement = $(`<img src="" alt="pokemon-pic" class="pokemon-img w-100 mx-auto">`);
         imageElement.attr('src', pokemon.imageUrl);
 
         modalTitle.append(titleElement);
         modalBody.append(imageElement);
+        modalBody.append(typeElement);
         modalBody.append(heightElement);
-        modalBody.append(typesElement);
+        modalBody.append(weightElement);
     }
 
+    //Search pokemon name for containing typed word
+    let searchPokemon = document.querySelector('#search-bar');
+    searchPokemon.addEventListener('input', () =>{
+        let value = searchPokemon.value.toLowerCase();
+        let pokemonList = document.querySelectorAll('li');
+
+        pokemonList.forEach((pokemon) =>{
+            if(pokemon.innerText.toLowerCase().includes(value))
+                pokemon.style.display = 'block';
+            else
+                pokemon.style.display = 'none';
+        })
+    });
+
+    //Get the button
+    let mybutton = document.getElementById("btn-back-to-top");
+
+    // When the user scrolls down 20px from the top of the document, show the button
+    window.onscroll = () => {
+        scrollFunction();
+    };
+
+    const scrollFunction = () =>{
+        if (
+            document.body.scrollTop > 20 ||
+            document.documentElement.scrollTop > 20
+        ) {
+            mybutton.style.display = "block";
+        } else {
+            mybutton.style.display = "none";
+        }
+    }
+
+    const backToTop = () => {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }
+
+    // When the user clicks on the button, scroll to the top of the document
+    mybutton.addEventListener("click", backToTop);
+
+    //set text color based on pokemon type
+    const changePokemonTypeColor = () =>{
+        let pokemonType = document.getElementById('pokemon-type');
+        let type = pokemonType.innerHTML;
+        console.log(type);
+
+        if(type.includes('grass'))
+            pokemonType.style.backgroundColor = 'green';
+        else if(type.includes('fire'))
+            pokemonType.style.backgroundColor = 'orange';   
+        else if(type.includes('bug'))
+            pokemonType.style.backgroundColor = 'red';     
+        else if(type.includes('fairy'))
+            pokemonType.style.backgroundColor = 'pink';    
+        else if(type.includes('water'))
+            pokemonType.style.backgroundColor = 'blue';      
+    }
+   
     return{
         add : add,
         addListItem : addListItem,

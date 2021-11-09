@@ -7,37 +7,53 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <link rel="shortcut icon" href="./image/favicon-32x32.png" type="image/x-icon">
-    <title>Pokemon App</title>
+    <link href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" rel="stylesheet" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">    <title>Pokemon App</title>
     <link rel="stylesheet" href="./css/styles.css">
 </head>
 <body>
     <header>
-        <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" href="index.html">
-                <img src="image/Pokémon.png" alt="logo pic" class="navbar-img-logo">
-            </a>
+        <nav class="navbar fixed-top navbar-expand-sm navbar-dark bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="index.html">
+                    <img src="image/Pokémon.png" alt="logo pic" class="navbar-img-logo">
+                </a>
+                <button class="navbar-toggler p-0" type="button" data-toggle="collapse" data-target="#navbarTogglerData" aria-controls="navbarTogglerData" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-end" id="navbarTogglerData">
+        			<form class="d-flex my-2 my-lg-0">
+          				<input class="form-control" id="search-bar" type="search" placeholder="Search a Pokemon" aria-label="Search">
+        			</form>
+      			</div>
+            </div>
         </nav>
     </header>
-    <div class="container page-container">  
-        <h2 class="display-6 text-center mb-n1 pt-2">Pokédex</h2>
-        <div class="list-group flex-row list-group-horizontal flex-wrap" id="list-group"></div>
-         
-        <!-- Modal -->
-        <div class="modal fade" id="pokemonModal" tabindex="-1" role="dialog" aria-labelledby="modal-title-label" aria-hidden="true">
-            <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
-                <div class="modal-content border-success border-2">
-                    <div class="modal-header bg-success">
-                        <h5 class="modal-title text-capitalize col-12 text-center" id="modal-title-label"></h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
+    <main>
+        <div class="container">  
+            <h2 class="display-6 text-center mb-n1 py-3 list-title">Kanto Pokédex</h2>
+            <div class="list-group flex-row list-group-horizontal flex-wrap" id="list-group"></div>
+             
+            <!-- Modal -->
+            <div class="modal fade px-4" id="pokemonModal" tabindex="-1" role="dialog" aria-labelledby="modal-title-label" aria-hidden="true">
+                <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+                    <div class="modal-content border-success">
+                        <div class="modal-header bg-success">
+                            <h5 class="modal-title text-capitalize col-12 text-center" id="modal-title-label"></h5>
+                            <button type="button" class="btn-close btn-success px-1" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>  
+        <!-- Back to top button -->
+        <button type="button" class="btn btn-primary btn-floating btn-lg" id="btn-back-to-top" data-toggle="tooltip" data-placement="top" title="Click to go top">
+            <i class="fas fa-arrow-up"></i>
+        </button>  
+    </main>  
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
@@ -46,3 +62,4 @@
     <script src="./js/script.js"></script>
 </body>
 </html>
+

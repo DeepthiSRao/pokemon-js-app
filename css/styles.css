@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Andada+Pro:ital,wght@1,500&display=swap');
 
 * {
@@ -10,17 +11,16 @@
     --mark-size: 25px;
     --primary-color: #ffbe0b;
     --secondary-color: #3a86ff;
+    --text-primary-color: #5f676f;
+    --text-secondary-color: #fff;
 }
 
 body {
     font-size: 1rem;
     font-style: normal;
     line-height: 1.6;
-    font-family: 'Andada Pro', serif;
-}
-
-.page-container {
-    margin-top: 60px;
+    font-family: 'Andada Pro', serif; 
+    padding-top: 4rem;
 }
 
 :is(first-child, :last-child) .list-group-item {
@@ -37,14 +37,19 @@ body {
     box-shadow: 4px 4px 4px -2px var(--secondary-color);
 }
 
+.list-group {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+}
+
 .btn:hover {
     color: white;
     opacity: .8;
 }
 
 .navbar-img-logo {
-    height: 30px;
-    width: 200%;
+    height: 40px;
+    max-width: 200px;
 }
 
 .pokemon-img {
@@ -53,17 +58,17 @@ body {
     align-self: center;
 }
 
+.modal-content {
+    border-width: 2px;
+    border-radius: .5rem;
+}
 
 .modal-header {
 	border: none;
-    color: white;
+    color: var(--text-secondary-color);
     padding: 5px;
 }
 
 .modal-footer {
     border: none;
-}
-
-.modal-header .close {
-    margin-left: -4rem;
 }
