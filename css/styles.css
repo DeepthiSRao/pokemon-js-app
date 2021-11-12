@@ -27,7 +27,7 @@ body {
 
 .navbar-img-logo {
     height: 50px;
-    min-width: 200px;
+    min-width: 300px;
 }
 
 .main-content {
@@ -199,6 +199,9 @@ body {
     .pokemon-card > p {
         font-size: 24px;
         margin-bottom: 0;
+    }
+    .navbar-img-logo {
+        min-width: 200px;
     }
 }
 

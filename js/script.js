@@ -28,8 +28,9 @@ const pokemonRepository = (() => {
         return fetch(apiURL).then((response) => {
             return response.json();
         }).then(function( json ){
-            json.results.forEach(( item ) => {
+            json.results.forEach(( item, index) => {
                 let pokemon = {
+                    id: index,
                     name: item.name,
                     detailsUrl: item.url,
                 };
@@ -87,7 +88,7 @@ const pokemonRepository = (() => {
         let pokemonList = document.querySelector('#list-group');
         let listItem = document.createElement('li');
         let imageUrl = await getPokemonImageUrl(pokemon.detailsUrl);
-
+       
         listItem.classList.add(
                                 'list-group-item',
                                 'border-0',
@@ -114,7 +115,7 @@ const pokemonRepository = (() => {
         button.setAttribute('data-target','#pokemonModal');
 
         listItem.appendChild(button);
-        pokemonList.appendChild(listItem);
+        pokemonList.insertBefore(listItem, pokemonList.children[pokemon.id]);
 
         //button event listener
         btnEventListener(button, pokemon);
