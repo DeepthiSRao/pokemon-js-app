@@ -1,6 +1,7 @@
 const pokemonRepository = (() => {
     let pokemonList = [];
     let apiURL = 'https://pokeapi.co/api/v2/pokemon/?limit=150';
+    let loadingDiv = document.querySelector('.loading');
     let typeColor = {
         normal: '#A8A77A',
         fire: '#EE8130',
@@ -23,18 +24,21 @@ const pokemonRepository = (() => {
     };
 
     const loadList = () => {
+        showLoadingMessage();
         return fetch(apiURL).then((response) => {
             return response.json();
         }).then(function( json ){
             json.results.forEach(( item ) => {
                 let pokemon = {
                     name: item.name,
-                    detailsUrl: item.url
+                    detailsUrl: item.url,
                 };
                 add( pokemon );
             });
-        }).catch(function( e ){
-            console.error( e );
+            hideLoadingMessage();
+        }).catch((e) => {
+            console.error(e);
+            hideLoadingMessage();
         });
     };
 
@@ -62,38 +66,50 @@ const pokemonRepository = (() => {
         pokemonList
     );
 
-    const add = (newPokemon) =>{
-        if( typeof newPokemon === "object" &&
-            "name" in newPokemon ){
-                pokemonList.push(newPokemon);  
+    const add = (pokemon) =>{
+        if( typeof pokemon === "object" &&
+            "name" in pokemon &&
+            "detailsUrl" in pokemon ){
+                pokemonList.push(pokemon);  
         }else{
             console.log("Pokemon is not correct");
         }
     };
 
-    const addListItem = (pokemon) => {
+    const getPokemonImageUrl = async (pokemonUrl) => {
+        const response = await fetch(pokemonUrl);
+        const details = await response.json();
+        let imageUrl = details && details.sprites.other.dream_world.front_default;
+        return imageUrl;
+    }
+
+    const addListItem = async (pokemon) => {
         let pokemonList = document.querySelector('#list-group');
         let listItem = document.createElement('li');
+        let imageUrl = await getPokemonImageUrl(pokemon.detailsUrl);
+
         listItem.classList.add(
-            'list-group-item',
-            'border-0',
-            'col-xl-2',
-            'col-lg-3',
-            'col-md-4',
-            'col-sm-6',
-            'col-xs-12',
-            'align-items-center',
-        );
+                                'list-group-item',
+                                'border-0',
+                                'col-xl-2',
+                                'col-lg-3',
+                                'col-md-4',
+                                'col-sm-6',
+                                'col-xs-12',
+                                'align-items-center',
+                            );
         let button = document.createElement('button'); 
-        button.innerText = pokemon.name;
+        button.innerHTML = `
+                                <p>${pokemon.name}</p>
+                                <img src="${imageUrl}" alt="Pokemon image"/>
+                            `;
         button.classList.add(
-            'btn',
-            'btn-warning',
-            'text-capitalize',
-            'btn-lg',
-            'w-100',
-            'pokemon-btn'
-            );
+                                'btn',
+                                'text-capitalize',
+                                'btn-lg',
+                                'w-100',
+                                'pokemon-card',
+                            );
         button.setAttribute('data-toggle','modal');
         button.setAttribute('data-target','#pokemonModal');
 
@@ -125,17 +141,17 @@ const pokemonRepository = (() => {
         modalBody.empty();
         modalTitle.empty();
         let titleElement = `#${pokemon.id} ${pokemon.name}`;
-        let typeElement = $(`<p class="mb-n1 pt-2">
-                                <span class="text-bold">Type: </span>
+        let typeElement = $(`<p class="mb-n1">
+                                Type: 
                                 ${pokemon.types.map((pokemon)=>{
                                     return `<span class="pokemon-type" style='background-color:${pokemon.color}'}>${pokemon.type}</span>`
                                 }).join('')}
                             </p>`);
         let heightElement = $(`<p class="mb-n1">
-                                    <span class="text-bold">Height: </span>${pokemon.height/10}m
+                                    Height: <span class="text-bold">${pokemon.height/10}m</span>
                                 </p>`);
         let weightElement = $(`<p class="mb-n1">
-                                    <span class="text-bold">Weight: </span>${pokemon.weight/10}Kg
+                                    Weight: <span class="text-bold">${pokemon.weight/10}Kg</span>
                                 </p>`);
         let imageElement = $(`<img src="" alt="pokemon-pic" class="pokemon-img w-100 mx-auto">`);
         imageElement.attr('src', pokemon.imageUrl);
@@ -145,6 +161,17 @@ const pokemonRepository = (() => {
         modalBody.append(typeElement);
         modalBody.append(heightElement);
         modalBody.append(weightElement);
+    }
+
+    //display loading message while fetching data
+    const showLoadingMessage = () =>{
+        loadingDiv.classList.add('show')
+    }
+
+    const hideLoadingMessage = () =>{
+        setTimeout(()=>{
+            loadingDiv.classList.remove('show');
+        }, 1000);
     }
 
     //Search pokemon name for containing typed word
@@ -188,24 +215,6 @@ const pokemonRepository = (() => {
     // When the user clicks on the button, scroll to the top of the document
     mybutton.addEventListener("click", backToTop);
 
-    //set text color based on pokemon type
-    const changePokemonTypeColor = () =>{
-        let pokemonType = document.getElementById('pokemon-type');
-        let type = pokemonType.innerHTML;
-        console.log(type);
-
-        if(type.includes('grass'))
-            pokemonType.style.backgroundColor = 'green';
-        else if(type.includes('fire'))
-            pokemonType.style.backgroundColor = 'orange';   
-        else if(type.includes('bug'))
-            pokemonType.style.backgroundColor = 'red';     
-        else if(type.includes('fairy'))
-            pokemonType.style.backgroundColor = 'pink';    
-        else if(type.includes('water'))
-            pokemonType.style.backgroundColor = 'blue';      
-    }
-   
     return{
         add : add,
         addListItem : addListItem,

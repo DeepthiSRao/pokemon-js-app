@@ -29,17 +29,18 @@
         </nav>
     </header>
     <main>
-        <div class="container">  
-            <h2 class="display-6 text-center mb-n1 py-3 list-title">Kanto Pokédex</h2>
+        <div  class="main-content">
+            <h1 class="display-6 text-center mb-n1 py-3 list-title mx-auto">Kanto Pokédex</h1>
             <div class="list-group flex-row list-group-horizontal flex-wrap" id="list-group"></div>
-             
+                
             <!-- Modal -->
-            <div class="modal fade px-4" id="pokemonModal" tabindex="-1" role="dialog" aria-labelledby="modal-title-label" aria-hidden="true">
-                <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
-                    <div class="modal-content border-success">
-                        <div class="modal-header bg-success">
-                            <h5 class="modal-title text-capitalize col-12 text-center" id="modal-title-label"></h5>
-                            <button type="button" class="btn-close btn-success px-1" data-dismiss="modal" aria-label="Close">
+            <div class="modal fade px-5" id="pokemonModal" tabindex="-1" role="dialog" aria-labelledby="modal-title-label" aria-hidden="true">
+                <div class="modal-dialog modal-md modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-capitalize col-12 text-center" id="modal-title-label">
+                            </h5>
+                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
@@ -49,11 +50,16 @@
                 </div>
             </div>
         </div>
-        <!-- Back to top button -->
-        <button type="button" class="btn btn-primary btn-floating btn-lg" id="btn-back-to-top" data-toggle="tooltip" data-placement="top" title="Click to go top">
-            <i class="fas fa-arrow-up"></i>
-        </button>  
-    </main>  
+        
+        <div class="loading show">
+            <p class="loading-mess">Loading the data...</p>
+        </div>
+    </main>
+    <!-- Back to top button -->
+    <button type="button" class="btn btn-primary btn-floating btn-lg" id="btn-back-to-top" data-toggle="tooltip" data-placement="top" title="Click to go top">
+        <i class="fas fa-arrow-up"></i>
+    </button>  
+
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
